@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>this</title>
+</head>
+
+<body>
+    <button id="btn">Click me</button>
+
+    <button id="btn1">Click me</button>
+    <script>
+
+
+        //  understanding this
+
+        const person = {
+            name: "ganesh",
+            sayHello: function () {
+                console.log(this.name);
+            }
+        }
+        // sayHello()  o/p is sayHello is not defined
+        person.sayHello()
+        // o/p is ganesh
+
+
+        // 'this' in arrow functions
+
+        const calculator = {
+            value: 10,
+            add: function () {
+                console.log(this.value += 5)
+            }
+            // subtract:()=>{
+            //    console.log(this.value-=5);
+            // }
+        }
+        calculator.add()
+        // for add o/p is 15
+        // calculator.subtract()  o/p is NaN
+
+
+        //   'this' in event handlers
+
+
+        const btn = document.getElementById("btn")
+        btn.addEventListener("click", function () {
+            console.log(this)
+        })
+
+        const btn1 = document.getElementById("btn1")
+        btn1.addEventListener("click", () => {
+            console.log(this)
+        })
+
+
+        //   using call()
+
+        const car = {
+            startEngine: function () {
+                console.log(`Starting the engine of ${this.brand}`);
+            }
+        }
+        const bike = {
+            brand: "benz"
+        }
+        car.startEngine.call(bike)
+
+
+        // using apply()
+
+        const mathOperations = {
+            sum: function () {
+                console.log(`sum of ${a},${b}=${this.a + b}`)
+            }
+        }
+        const arr = [5, 10]
+        mathOperations.sum.apply(arr)
+
+
+        // using bind()
+
+        const counter = {
+            count: 0,
+            increment: function () {
+                console.log(this.count + 1)
+            }
+        }
+        var bindIncrement = counter.increment.bind(counter)
+        bindIncrement()
+
+        // this with timers
+
+        const timer = {
+            name: "mytimer",
+            start() {
+                setTimeout(() => {
+                    console.log(`timer ${this.name} started!`)
+                }, 2000)
+            }
+        }
+        const object = {
+            name: "Alice"
+        }
+        var bindTime = timer.start.bind(timer)
+        bindTime()
+        const bind1 = timer.start.bind(object, "name");
+        bind1()
+
+
+
+        // borrow and reuse
+
+        const rectangle = {
+            length: 10,
+            width: 12
+        }
+        const circle = {
+            radius: 5
+        }
+        function calculateArea() {
+            if (this.length && this.width) {
+                const rectArea = this.length * this.width;
+                console.log(`Rectangle area is ${rectArea}`)
+            }
+            if (this.radius) {
+                const circleArea = 3.14 * this.radius * this.radius;
+                console.log(`circle area is ${circleArea}`)
+            }
+        }
+        calculateArea.call(rectangle)
+        calculateArea.call(circle)
+
+
+
+
+
+        // this in classes
+
+        const employee = {
+            name: "bob",
+            designation: "developer",
+            introduce: function () {
+                console.log(`Hi i am ${this.name},a ${this.designation}`)
+            }
+        }
+        const object1 = {
+            name: "alice",
+            designation: "engineer"
+        }
+        const object2 = {
+            name: "john",
+            designation: "b-tech"
+        }
+        employee.introduce()
+        employee.introduce.call(object1)
+        employee.introduce.call(object2)
+
+        const method = employee.introduce;
+        const method1 = method.bind(object1)
+        const method2 = method.bind(object2)
+        method1()
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
